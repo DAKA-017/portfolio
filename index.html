@@ -683,6 +683,92 @@
 
     .hero-inner { position: relative; }
 
+    /* Slow orbital rings behind the name — pure CSS, clipped by the hero */
+    .hero-orbit-layer {
+      position: absolute;
+      inset: -12% -6%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero-aura {
+      position: absolute;
+      top: 46%;
+      left: 52%;
+      width: min(880px, 90vw);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77, 124, 255, 0.12), rgba(168, 85, 247, 0.06) 42%, transparent 68%);
+      filter: blur(30px);
+      animation: heroAura 14s ease-in-out infinite;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      top: 44%;
+      left: 52%;
+      width: min(1180px, 98vw);
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 255, 255, 0.055);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(-16deg) scaleY(0.54);
+    }
+
+    .hero-orbit--2 {
+      width: min(760px, 70vw);
+      border-color: rgba(168, 85, 247, 0.1);
+      transform: translate(-50%, -50%) rotate(24deg) scaleY(0.7);
+    }
+
+    .hero-orbit__runner {
+      position: absolute;
+      inset: 0;
+      animation: heroOrbit 48s linear infinite;
+    }
+
+    .hero-orbit--2 .hero-orbit__runner {
+      animation-duration: 66s;
+      animation-direction: reverse;
+    }
+
+    .hero-orbit__dot {
+      position: absolute;
+      top: 50%;
+      left: -3.5px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 16px rgba(77, 124, 255, 0.9);
+    }
+
+    .hero-orbit--2 .hero-orbit__dot {
+      background: var(--pink);
+      box-shadow: 0 0 16px rgba(255, 77, 141, 0.85);
+    }
+
+    .hero-orbit__dot--alt {
+      left: auto;
+      right: -3.5px;
+      background: var(--violet);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.85);
+    }
+
+    .hero-orbit--2 .hero-orbit__dot--alt {
+      background: var(--orange);
+      box-shadow: 0 0 16px rgba(255, 154, 77, 0.75);
+    }
+
+    @keyframes heroOrbit {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes heroAura {
+      0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.55; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
     .hero-top {
       display: flex;
       align-items: center;
@@ -1059,6 +1145,42 @@
       letter-spacing: 0.1em;
       color: rgba(255, 255, 255, 0.3);
       white-space: nowrap;
+    }
+
+    /* At-a-glance numbers */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: clamp(44px, 6vw, 76px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat {
+      display: grid;
+      align-content: start;
+      gap: 6px;
+      padding: 22px clamp(14px, 2vw, 28px);
+    }
+
+    .stat + .stat { border-left: 1px solid var(--line); }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+
+    .stat-label {
+      font-size: 0.64rem;
+      line-height: 1.5;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     /* ID card */
@@ -1573,6 +1695,72 @@
 
     @keyframes orbit {
       to { transform: rotate(360deg) scaleY(0.55); }
+    }
+
+    /* TrustWeave card: a small, always-moving trust graph */
+    .trust-graph {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .trust-edge {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.16);
+      stroke-width: 1;
+      stroke-dasharray: 3 6;
+      animation: trustFlow 18s linear infinite;
+    }
+
+    .trust-edge--hot {
+      stroke: rgba(77, 124, 255, 0.7);
+      stroke-dasharray: none;
+    }
+
+    .trust-node {
+      fill: #09090f;
+      stroke: rgba(255, 255, 255, 0.42);
+      stroke-width: 1.2;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: trustPulse 6s ease-in-out infinite;
+    }
+
+    .trust-node--violet { stroke: rgba(168, 85, 247, 0.75); }
+    .trust-node--pink { stroke: rgba(255, 77, 141, 0.7); }
+
+    .trust-node--core {
+      fill: rgba(77, 124, 255, 0.18);
+      stroke: rgba(77, 124, 255, 0.95);
+      stroke-width: 1.4;
+    }
+
+    .trust-halo {
+      fill: none;
+      stroke: rgba(77, 124, 255, 0.32);
+      stroke-width: 1;
+      stroke-dasharray: 2 5;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: trustPulse 6s ease-in-out infinite reverse;
+    }
+
+    .trust-label {
+      fill: rgba(244, 244, 248, 0.92);
+      font-family: var(--font-display);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    @keyframes trustFlow {
+      to { stroke-dashoffset: -180; }
+    }
+
+    @keyframes trustPulse {
+      0%, 100% { opacity: 0.45; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.12); }
     }
 
     .project-flag {
@@ -2094,6 +2282,8 @@
 
       .hero { padding-top: 120px; }
       .hero-ghost { top: -18%; right: -8%; opacity: 0.7; }
+      .hero-orbit-layer { inset: -6% -18%; opacity: 0.7; }
+      .hero-orbit--2 { display: none; }
       .hero-sub { align-items: flex-start; }
       .hero-loc { display: none; }
 
@@ -2139,6 +2329,10 @@
 
       .hero-meta > span { justify-content: space-between; }
       .scroll-cue { display: none; }
+
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(odd) { border-left: 0; }
+      .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
 
       .marquee { transform: rotate(-1.8deg) scale(1.05); }
       .marquee-item { font-size: 0.92rem; }
@@ -2192,6 +2386,13 @@
       .line-inner { transform: none; }
       .cursor-ring { display: none; }
       .marquee-track { animation: none; }
+      .hero-orbit__runner,
+      .hero-aura,
+      .trust-node,
+      .trust-halo,
+      .trust-edge { animation: none !important; }
+      .trust-node,
+      .trust-halo { opacity: 1; transform: none; }
       .project-card:hover,
       .sport:hover,
       .sport:nth-child(2):hover { transform: none; }
@@ -2322,6 +2523,22 @@
     <!-- ==================== HERO ==================== -->
     <section class="hero" id="top" aria-labelledby="hero-name">
       <div class="container hero-inner">
+        <div class="hero-orbit-layer" aria-hidden="true">
+          <span class="hero-aura"></span>
+          <span class="hero-orbit">
+            <span class="hero-orbit__runner">
+              <span class="hero-orbit__dot"></span>
+              <span class="hero-orbit__dot hero-orbit__dot--alt"></span>
+            </span>
+          </span>
+          <span class="hero-orbit hero-orbit--2">
+            <span class="hero-orbit__runner">
+              <span class="hero-orbit__dot"></span>
+              <span class="hero-orbit__dot hero-orbit__dot--alt"></span>
+            </span>
+          </span>
+        </div>
+
         <div class="hero-top reveal">
           <span class="badge">
             <span class="live-dot" aria-hidden="true"></span>
@@ -2449,6 +2666,25 @@
               <div class="id-ring" aria-hidden="true"></div>
               <span class="id-coords" aria-hidden="true">28.99° N / 77.02° E</span>
             </div>
+          </div>
+        </div>
+
+        <div class="stat-strip reveal" style="--delay:.28s" aria-label="At a glance">
+          <div class="stat">
+            <span class="stat-num">2026</span>
+            <span class="stat-label">first year at Rishihood</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="3" data-pad="2">03</span>
+            <span class="stat-label">skill areas in rotation</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="1" data-pad="2">01</span>
+            <span class="stat-label">live project shipped</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="3" data-pad="2">03</span>
+            <span class="stat-label">sports off-screen</span>
           </div>
         </div>
       </div>
@@ -2641,8 +2877,38 @@
           <article class="project-card spotlight reveal" data-tilt data-cursor="View" style="--glow:77,124,255; --delay:.05s">
             <div class="tilt-inner">
               <div class="project-visual">
-                <span class="project-orbit" aria-hidden="true"></span>
-                <span class="project-index" aria-hidden="true">01</span>
+                <svg class="trust-graph" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                  <g class="trust-edges">
+                    <path class="trust-edge" d="M160 104 L118 70" />
+                    <path class="trust-edge trust-edge--hot" d="M160 104 L202 70" />
+                    <path class="trust-edge" d="M160 104 L160 148" />
+                    <path class="trust-edge" d="M118 70 L62 48" style="animation-delay:-3s" />
+                    <path class="trust-edge" d="M118 70 L160 24" style="animation-delay:-6s" />
+                    <path class="trust-edge" d="M202 70 L160 24" style="animation-delay:-2s" />
+                    <path class="trust-edge" d="M202 70 L258 48" style="animation-delay:-5s" />
+                    <path class="trust-edge" d="M160 148 L116 170" style="animation-delay:-8s" />
+                    <path class="trust-edge" d="M160 148 L204 170" style="animation-delay:-1s" />
+                    <path class="trust-edge" d="M62 48 L52 116" style="animation-delay:-7s" />
+                    <path class="trust-edge" d="M52 116 L116 170" style="animation-delay:-4s" />
+                    <path class="trust-edge" d="M258 48 L268 116" style="animation-delay:-9s" />
+                    <path class="trust-edge" d="M268 116 L204 170" style="animation-delay:-2.5s" />
+                  </g>
+                  <g class="trust-nodes">
+                    <circle class="trust-node trust-node--violet" cx="62" cy="48" r="4.5" style="animation-delay:-1s" />
+                    <circle class="trust-node" cx="160" cy="24" r="5" style="animation-delay:-3.4s" />
+                    <circle class="trust-node trust-node--pink" cx="258" cy="48" r="4.5" style="animation-delay:-2.2s" />
+                    <circle class="trust-node trust-node--violet" cx="268" cy="116" r="4.5" style="animation-delay:-4.6s" />
+                    <circle class="trust-node" cx="204" cy="170" r="5" style="animation-delay:-1.6s" />
+                    <circle class="trust-node trust-node--pink" cx="116" cy="170" r="4.5" style="animation-delay:-3.8s" />
+                    <circle class="trust-node trust-node--violet" cx="52" cy="116" r="4.5" style="animation-delay:-2.8s" />
+                    <circle class="trust-node" cx="118" cy="70" r="5.5" style="animation-delay:-5.2s" />
+                    <circle class="trust-node" cx="202" cy="70" r="5.5" style="animation-delay:-0.6s" />
+                    <circle class="trust-node trust-node--violet" cx="160" cy="148" r="5.5" style="animation-delay:-4s" />
+                    <circle class="trust-halo" cx="160" cy="104" r="22" />
+                    <circle class="trust-node trust-node--core" cx="160" cy="104" r="15" style="animation-delay:-2s" />
+                    <text class="trust-label" x="160" y="107" text-anchor="middle">TW</text>
+                  </g>
+                </svg>
                 <span class="project-flag">Live</span>
               </div>
               <div class="project-body">
@@ -2965,6 +3231,56 @@
       }
 
       /* ---------------------------------------------------------
+         Count-up stats when the strip enters view
+         --------------------------------------------------------- */
+      function initCounters() {
+        const counters = $$('.stat-num[data-count]');
+        if (!counters.length) return;
+
+        const padFor = (el) => Number(el.dataset.pad) || 0;
+        const finalValue = (el) => {
+          const target = Number(el.dataset.count) || 0;
+          const pad = padFor(el);
+          return pad ? String(target).padStart(pad, '0') : String(target);
+        };
+
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          counters.forEach((el) => { el.textContent = finalValue(el); });
+          return;
+        }
+
+        counters.forEach((el) => {
+          const pad = padFor(el);
+          el.textContent = pad ? '0'.repeat(pad) : '0';
+        });
+
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            obs.unobserve(entry.target);
+
+            const el = entry.target;
+            const target = Number(el.dataset.count) || 0;
+            const pad = padFor(el);
+            const duration = 1400;
+            const startedAt = performance.now();
+
+            const tick = (now) => {
+              const progressValue = clamp((now - startedAt) / duration, 0, 1);
+              const eased = 1 - Math.pow(1 - progressValue, 3);
+              const value = Math.round(eased * target);
+              el.textContent = pad ? String(value).padStart(pad, '0') : String(value);
+              if (progressValue < 1) requestAnimationFrame(tick);
+            };
+
+            requestAnimationFrame(tick);
+          });
+        }, { threshold: 0.5 });
+
+        counters.forEach((el) => observer.observe(el));
+      }
+
+      /* ---------------------------------------------------------
          Page-load intro: counter -> curtain wipe -> hero letters
          --------------------------------------------------------- */
       const preloader = $('#preloader');
@@ -2978,6 +3294,7 @@
         body.classList.add('is-loaded');
         if (preloader) preloader.classList.add('is-done');
         initReveals();
+        initCounters();
         window.setTimeout(() => {
           if (preloader && preloader.parentNode) preloader.parentNode.removeChild(preloader);
         }, 1400);
